@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CSharpFundamentals": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
