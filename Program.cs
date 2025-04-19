@@ -1,4 +1,6 @@
-﻿namespace CSharpFundamentals
+﻿using CSharpFundamentals.Classes;
+
+namespace CSharpFundamentals
 {
     class Program
     {
@@ -7,12 +9,15 @@
             Console.WriteLine("C# Fundamentals - Mosh's Ultimate C# Series");
             Console.WriteLine("==========================================");
 
-            // Comment/uncomment methods to run different sections
             PrimitiveTypes();
-            // TypeConversion();
-            // Operators();
-            // ControlFlow();
-            // Arrays();
+            TypeConversion();
+            Operators();
+            Arrays();
+            DemonstrateClasses();
+            DemonstrateStructs();
+            DemonstrateArrays();
+            DemonstrateStrings();
+            ControlFlow();
         }
 
         static void PrimitiveTypes()
@@ -165,6 +170,202 @@
             Console.WriteLine($"Length: {length ?? 0}");
         }
 
+        static void Arrays()
+        {
+            Console.WriteLine("\n=== Arrays ===");
+
+            // Array declaration and initialization
+            int[] numbers = new int[5];
+            numbers[0] = 1;
+            numbers[1] = 2;
+            numbers[2] = 3;
+            numbers[3] = 4;
+            numbers[4] = 5;
+
+            // Alternative initialization
+            int[] scores = new int[] { 90, 85, 95, 80, 88 };
+
+            // Shorter initialization
+            string[] names = { "John", "Mary", "Bob", "Alice" };
+
+            // Accessing array elements
+            Console.WriteLine($"First number: {numbers[0]}");
+            Console.WriteLine($"Third score: {scores[2]}");
+            Console.WriteLine($"Second name: {names[1]}");
+
+            // Array length
+            Console.WriteLine($"Numbers length: {numbers.Length}");
+
+            // Iterating through an array
+            Console.WriteLine("All scores:");
+            for (int i = 0; i < scores.Length; i++)
+            {
+                Console.Write($"{scores[i]} ");
+            }
+            Console.WriteLine();
+
+            // Using foreach
+            Console.WriteLine("All names:");
+            foreach (string name in names)
+            {
+                Console.Write($"{name} ");
+            }
+            Console.WriteLine();
+
+            // Multi-dimensional arrays
+            int[,] matrix = new int[3, 3];
+            matrix[0, 0] = 1;
+            matrix[0, 1] = 2;
+            matrix[0, 2] = 3;
+            matrix[1, 0] = 4;
+            matrix[1, 1] = 5;
+            matrix[1, 2] = 6;
+            matrix[2, 0] = 7;
+            matrix[2, 1] = 8;
+            matrix[2, 2] = 9;
+
+            // Alternative multi-dimensional array initialization
+            int[,] grid = {
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 }
+            };
+
+            // Accessing multi-dimensional array elements
+            Console.WriteLine($"Matrix[1,2]: {matrix[1, 2]}");
+            Console.WriteLine($"Grid[2,0]: {grid[2, 0]}");
+
+            // Jagged arrays (arrays of arrays)
+            int[][] jaggedArray = new int[3][];
+            jaggedArray[0] = new int[] { 1, 2, 3 };
+            jaggedArray[1] = new int[] { 4, 5 };
+            jaggedArray[2] = new int[] { 6, 7, 8, 9 };
+
+            // Accessing jagged array elements
+            Console.WriteLine($"JaggedArray[0][2]: {jaggedArray[0][2]}");
+            Console.WriteLine($"JaggedArray[2][3]: {jaggedArray[2][3]}");
+        }
+
+        static void DemonstrateClasses()
+        {
+            Console.WriteLine("\n=== Classes and Objects ===");
+
+            // Classes
+            Person fitz = new Person
+            {
+                FirstName = "Fitz",
+                LastName = "Moso"
+            };
+            fitz.Introduce();
+
+            Person john = new Person
+            {
+                FirstName = "John",
+                LastName = "Doe"
+            };
+            john.Introduce();
+
+            // Static methods
+            const int value1 = 5;
+            const int value2 = 10;
+
+            int sum = Calculator.Add(value1, value2);
+            int difference = Calculator.Subtract(value1, value2);
+            double quotient = Calculator.Divide(value1, value2);
+            int product = Calculator.Multiply(value1, value2);
+
+            Console.WriteLine($"Addition: {sum}, Subtraction: {difference}, Division: {quotient}, Multiplication: {product}");
+        }
+
+        static void DemonstrateStructs()
+        {
+            Console.WriteLine("\n=== Structs ===");
+
+            var color = new Struct.RgbColor
+            {
+                Red = 255,
+                Green = 0,
+                Blue = 0
+            };
+
+            Console.WriteLine($"Color: R:{color.Red}, G:{color.Green}, B:{color.Blue}");
+        }
+
+        static void DemonstrateArrays()
+        {
+            Console.WriteLine("\n=== Array Examples ===");
+
+            // Integer array
+            var numbers = new int[3];
+            numbers[0] = 1;
+
+            Console.WriteLine("Integer array:");
+            Console.WriteLine($"numbers[0]: {numbers[0]}");
+            Console.WriteLine($"numbers[1]: {numbers[1]} (default)");
+            Console.WriteLine($"numbers[2]: {numbers[2]} (default)");
+
+            // Boolean array
+            var flags = new bool[3];
+            flags[0] = true;
+
+            Console.WriteLine("\nBoolean array:");
+            Console.WriteLine($"flags[0]: {flags[0]}");
+            Console.WriteLine($"flags[1]: {flags[1]} (default)");
+            Console.WriteLine($"flags[2]: {flags[2]} (default)");
+
+            // String array with initialization
+            var names = new string[] { "John", "Jack", "Mary" };
+
+            Console.WriteLine("\nString array:");
+            Console.WriteLine($"names[0]: {names[0]}");
+            Console.WriteLine($"names[1]: {names[1]}");
+            Console.WriteLine($"names[2]: {names[2]}");
+        }
+
+        static void DemonstrateStrings()
+        {
+            Console.WriteLine("\n=== String Operations ===");
+
+            var color = new Struct.RgbColor { Red = 255, Green = 0, Blue = 0 };
+
+            // Different ways to format strings
+            Console.WriteLine("String formatting:");
+            var stringFormat = string.Format("Color: {0}, {1}, {2}", color.Red, color.Green, color.Blue);
+            var stringInterpolation = $"Color: {color.Red}, {color.Green}, {color.Blue}";
+            var stringConcatenation = "Color: " + color.Red + ", " + color.Green + ", " + color.Blue;
+
+            Console.WriteLine(stringFormat);
+            Console.WriteLine(stringInterpolation);
+            Console.WriteLine(stringConcatenation);
+
+            // String joining
+            string[] names = ["John", "Jack", "Mary"];
+            var list = string.Join(",", names);
+            Console.WriteLine($"\nJoined list: {list}");
+
+            // Escape characters
+            Console.WriteLine("\nEscape characters:");
+            Console.WriteLine("New line: \nThis text is on a new line");
+            Console.WriteLine("Tab: This is\ta tab");
+            Console.WriteLine("Backslash: This is a \\ backslash");
+            Console.WriteLine("Quotes: 'single quote' and \"double quotes\"");
+
+            // Verbatim string
+            var verbatim = @"This is a verbatim string \n \t (escape sequences not processed)";
+            Console.WriteLine($"\nVerbatim string: {verbatim}");
+
+            // String methods
+            Console.WriteLine("\nString methods:");
+            var text = "Hello World";
+            Console.WriteLine($"Original: '{text}'");
+            Console.WriteLine($"Length: {text.Length}");
+            Console.WriteLine($"Upper: {text.ToUpper()}");
+            Console.WriteLine($"Lower: {text.ToLower()}");
+            Console.WriteLine($"IndexOf 'World': {text.IndexOf("world")}");
+            Console.WriteLine($"Substring from index 6: '{text.Substring(6)}'");
+            Console.WriteLine($"Replace 'World' with 'Fitz': '{text.Replace("World", "Fitz")}'");
+        }
+
         static void ControlFlow()
         {
             Console.WriteLine("\n=== Control Flow ===");
@@ -173,17 +374,11 @@
             int hour = 10;
 
             if (hour > 0 && hour < 12)
-            {
                 Console.WriteLine("Good morning!");
-            }
             else if (hour >= 12 && hour < 18)
-            {
                 Console.WriteLine("Good afternoon!");
-            }
             else
-            {
                 Console.WriteLine("Good evening!");
-            }
 
             // Switch statement
             int day = 3;
@@ -268,82 +463,6 @@
                 Console.Write($"{i} ");
             }
             Console.WriteLine();
-        }
-
-        static void Arrays()
-        {
-            Console.WriteLine("\n=== Arrays ===");
-
-            // Array declaration and initialization
-            int[] numbers = new int[5];
-            numbers[0] = 1;
-            numbers[1] = 2;
-            numbers[2] = 3;
-            numbers[3] = 4;
-            numbers[4] = 5;
-
-            // Alternative initialization
-            int[] scores = new int[] { 90, 85, 95, 80, 88 };
-
-            // Shorter initialization
-            string[] names = { "John", "Mary", "Bob", "Alice" };
-
-            // Accessing array elements
-            Console.WriteLine($"First number: {numbers[0]}");
-            Console.WriteLine($"Third score: {scores[2]}");
-            Console.WriteLine($"Second name: {names[1]}");
-
-            // Array length
-            Console.WriteLine($"Numbers length: {numbers.Length}");
-
-            // Iterating through an array
-            Console.WriteLine("All scores:");
-            for (int i = 0; i < scores.Length; i++)
-            {
-                Console.Write($"{scores[i]} ");
-            }
-            Console.WriteLine();
-
-            // Using foreach
-            Console.WriteLine("All names:");
-            foreach (string name in names)
-            {
-                Console.Write($"{name} ");
-            }
-            Console.WriteLine();
-
-            // Multi-dimensional arrays
-            int[,] matrix = new int[3, 3];
-            matrix[0, 0] = 1;
-            matrix[0, 1] = 2;
-            matrix[0, 2] = 3;
-            matrix[1, 0] = 4;
-            matrix[1, 1] = 5;
-            matrix[1, 2] = 6;
-            matrix[2, 0] = 7;
-            matrix[2, 1] = 8;
-            matrix[2, 2] = 9;
-
-            // Alternative multi-dimensional array initialization
-            int[,] grid = {
-                { 1, 2, 3 },
-                { 4, 5, 6 },
-                { 7, 8, 9 }
-            };
-
-            // Accessing multi-dimensional array elements
-            Console.WriteLine($"Matrix[1,2]: {matrix[1, 2]}");
-            Console.WriteLine($"Grid[2,0]: {grid[2, 0]}");
-
-            // Jagged arrays (arrays of arrays)
-            int[][] jaggedArray = new int[3][];
-            jaggedArray[0] = new int[] { 1, 2, 3 };
-            jaggedArray[1] = new int[] { 4, 5 };
-            jaggedArray[2] = new int[] { 6, 7, 8, 9 };
-
-            // Accessing jagged array elements
-            Console.WriteLine($"JaggedArray[0][2]: {jaggedArray[0][2]}");
-            Console.WriteLine($"JaggedArray[2][3]: {jaggedArray[2][3]}");
         }
     }
 }
