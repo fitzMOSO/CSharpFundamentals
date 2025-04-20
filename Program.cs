@@ -21,8 +21,17 @@ namespace CSharpFundamentals
             //RandomClass();
             //ControlFlowExercises();
             //Arrays();
-            Lists();
+            //Lists();
             //ArraysAndListsExercises();
+            //DateTimeAndTimeSpan();
+            //StringBuilder();
+
+            _ = Others.HttpRequestsAsync();
+            Others.LinqExamples();
+            Others.FileOperations();
+            Others.DependencyInjectionExample();
+
+
         }
 
         static void PrimitiveTypes()
@@ -771,11 +780,741 @@ namespace CSharpFundamentals
 
         static void ArraysAndListsExercises()
         {
-            //Exercise1();
-            //Exercise2();
-            //Exercise3();
-            //Exercise4();
-            //Exercise5();
+            Exercise1();
+            Exercise2();
+            Exercise3();
+            Exercise4();
+            Exercise5();
+
+            // <summary>
+            // Write a program and continuously ask the user to enter different names, until the user presses Enter 
+            // (without supplying a name). Depending on the number of names provided, display a message based on the above pattern.
+            // </summary>
+            static void Exercise1()
+            {
+                var names = new List<string>();
+
+                while (true)
+                {
+                    Console.Write("Type a name (or hit ENTER to quit): ");
+
+                    var input = Console.ReadLine();
+                    if (String.IsNullOrWhiteSpace(input))
+                        break;
+                    names.Add(input);
+                }
+
+                if (names.Count > 2)
+                    Console.WriteLine("{0}, {1} and {2} others like your post", names[0], names[1], names.Count - 2);
+                else if (names.Count == 2)
+                    Console.WriteLine("{0} and {1} like your post", names[0], names[1]);
+                else if (names.Count == 1)
+                    Console.WriteLine("{0} likes your post.", names[0]);
+                else
+                    Console.WriteLine();
+            }
+
+            // <summary>
+            // Ask the user to enter their name. Use an array to reverse the name and then store the result in a new string. 
+            // Display the reversed name on the console.
+            // </summary>
+            static void Exercise2()
+            {
+                Console.Write("What's your name? ");
+                var name = Console.ReadLine();
+
+                var array = new char[name.Length];
+                for (var i = name.Length; i > 0; i--)
+                    array[name.Length - i] = name[i - 1];
+
+                var reversed = new string(array);
+                Console.WriteLine("Reversed name: " + reversed);
+            }
+
+            // <summary>
+            // Write a program and ask the user to enter 5 numbers. If a number has been previously entered, display 
+            // an error message and ask the user to re-try. Once the user successfully enters 5 unique numbers, sort them 
+            // and display the result on the console.
+            // </summary>
+            static void Exercise3()
+            {
+                var numbers = new List<int>();
+
+                while (numbers.Count < 5)
+                {
+                    Console.Write("Enter a number: ");
+                    var number = Convert.ToInt32(Console.ReadLine());
+                    if (numbers.Contains(number))
+                    {
+                        Console.WriteLine("You've previously entered " + number);
+                        continue;
+                    }
+
+                    numbers.Add(number);
+                }
+
+                numbers.Sort();
+
+                foreach (var number in numbers)
+                    Console.WriteLine(number);
+            }
+
+            // <summary>
+            // Write a program and ask the user to continuously enter a number or type "Quit" to exit. The list of numbers may 
+            // include duplicates. Display the unique numbers that the user has entered.
+            // </summary>
+            static void Exercise4()
+            {
+                var numbers = new List<int>();
+
+                while (true)
+                {
+                    Console.Write("Enter a number (or 'Quit' to exit): ");
+                    var input = Console.ReadLine();
+
+                    if (input.ToLower() == "quit")
+                        break;
+
+                    numbers.Add(Convert.ToInt32(input));
+                }
+
+                var uniques = new List<int>();
+                foreach (var number in numbers)
+                {
+                    if (!uniques.Contains(number))
+                        uniques.Add(number);
+                }
+
+                Console.WriteLine("Unique numbers:");
+                foreach (var number in uniques)
+                    Console.WriteLine(number);
+            }
+
+
+            // <summary>
+            // Write a program and ask the user to supply a list of comma separated numbers (e.g 5, 1, 9, 2, 10). If the list is 
+            // empty or includes less than 5 numbers, display "Invalid List" and ask the user to re-try; otherwise, display 
+            // the 3 smallest numbers in the list.
+            // 
+            // </summary>
+            static void Exercise5()
+            {
+                string[] elements;
+                while (true)
+                {
+                    Console.Write("Enter a list of comma-separated numbers: ");
+                    var input = Console.ReadLine();
+
+                    if (!String.IsNullOrWhiteSpace(input))
+                    {
+                        elements = input.Split(',');
+                        if (elements.Length >= 5)
+                            break;
+                    }
+
+                    Console.WriteLine("Invalid List");
+                }
+
+                var numbers = new List<int>();
+                foreach (var number in elements)
+                    numbers.Add(Convert.ToInt32(number));
+
+                var smallest = new List<int>();
+                while (smallest.Count < 3)
+                {
+                    // Assume the first number is the smallest
+                    var min = numbers[0];
+                    foreach (var number in numbers)
+                    {
+                        if (number < min)
+                            min = number;
+                    }
+                    smallest.Add(min);
+
+                    numbers.Remove(min);
+                }
+
+                Console.WriteLine("The 3 smallest numbers are: ");
+                foreach (var number in smallest)
+                    Console.WriteLine(number);
+            }
         }
+
+        static void DateTimeAndTimeSpan()
+        {
+
+            DateTimeStaticMembers();
+            DateTimeInstanceMembers();
+            TimeSpanStaticMembers();
+            TimeSpanInstanceMembers();
+
+            DateTimeDifferences();
+            TimeSpanDifferences();
+
+            static void DateTimeStaticMembers()
+            {
+                Console.WriteLine("=== DateTime Static Members ===");
+
+                // Static properties
+                Console.WriteLine($"DateTime.Now: {DateTime.Now}");
+                Console.WriteLine($"DateTime.Today: {DateTime.Today}");
+                Console.WriteLine($"DateTime.UtcNow: {DateTime.UtcNow}");
+                Console.WriteLine($"DateTime.MinValue: {DateTime.MinValue}");
+                Console.WriteLine($"DateTime.MaxValue: {DateTime.MaxValue}");
+
+                // Static methods
+                Console.WriteLine($"DateTime.IsLeapYear(2024): {DateTime.IsLeapYear(2024)}");
+                Console.WriteLine($"DateTime.DaysInMonth(2023, 2): {DateTime.DaysInMonth(2023, 2)}");
+
+                // Parsing methods (static)
+                string dateString = "2023-10-01 10:21";
+                Console.WriteLine($"DateTime.Parse(\"{dateString}\"): {DateTime.Parse(dateString)}");
+                Console.WriteLine($"DateTime.ParseExact(\"{dateString}\", \"yyyy-MM-dd HH:mm\", null): {DateTime.ParseExact(dateString, "yyyy-MM-dd HH:mm", null)}");
+
+                // TryParse methods (static)
+                bool success = DateTime.TryParse(dateString, out DateTime result);
+                Console.WriteLine($"DateTime.TryParse result: {success}, Value: {result}");
+
+                // Static comparison methods
+                var date1 = new DateTime(2023, 10, 1);
+                var date2 = new DateTime(2023, 10, 2);
+                Console.WriteLine($"DateTime.Compare(date1, date2): {DateTime.Compare(date1, date2)}");
+
+                Console.WriteLine();
+            }
+
+            static void DateTimeInstanceMembers()
+            {
+                Console.WriteLine("=== DateTime Instance Members ===");
+
+                // Create instance
+                var dateTime = new DateTime(2023, 10, 1);
+                Console.WriteLine($"Instance dateTime: {dateTime}");
+
+                // Instance properties
+                Console.WriteLine($"dateTime.Year: {dateTime.Year}");
+                Console.WriteLine($"dateTime.Month: {dateTime.Month}");
+                Console.WriteLine($"dateTime.Day: {dateTime.Day}");
+                Console.WriteLine($"dateTime.Hour: {dateTime.Hour}");
+                Console.WriteLine($"dateTime.Minute: {dateTime.Minute}");
+                Console.WriteLine($"dateTime.Second: {dateTime.Second}");
+                Console.WriteLine($"dateTime.Millisecond: {dateTime.Millisecond}");
+                Console.WriteLine($"dateTime.DayOfWeek: {dateTime.DayOfWeek}");
+                Console.WriteLine($"dateTime.DayOfYear: {dateTime.DayOfYear}");
+                Console.WriteLine($"dateTime.Ticks: {dateTime.Ticks}");
+                Console.WriteLine($"dateTime.Kind: {dateTime.Kind}");
+                Console.WriteLine($"dateTime.IsDaylightSavingTime(): {dateTime.IsDaylightSavingTime()}");
+
+                // Instance methods for adding/subtracting time
+                var now = DateTime.Now;
+                Console.WriteLine($"now.AddDays(5): {now.AddDays(5)}");
+                Console.WriteLine($"now.AddHours(5): {now.AddHours(5)}");
+                Console.WriteLine($"now.AddMinutes(5): {now.AddMinutes(5)}");
+                Console.WriteLine($"now.AddSeconds(5): {now.AddSeconds(5)}");
+                Console.WriteLine($"now.AddMilliseconds(5): {now.AddMilliseconds(5)}");
+                Console.WriteLine($"now.AddMonths(5): {now.AddMonths(5)}");
+                Console.WriteLine($"now.AddYears(5): {now.AddYears(5)}");
+                Console.WriteLine($"now.AddTicks(5000): {now.AddTicks(5000)}");
+
+                // Instance conversion methods
+                Console.WriteLine($"now.ToLocalTime(): {now.ToLocalTime()}");
+                Console.WriteLine($"now.ToUniversalTime(): {now.ToUniversalTime()}");
+                Console.WriteLine($"now.ToLongDateString(): {now.ToLongDateString()}");
+                Console.WriteLine($"now.ToShortDateString(): {now.ToShortDateString()}");
+                Console.WriteLine($"now.ToLongTimeString(): {now.ToLongTimeString()}");
+                Console.WriteLine($"now.ToShortTimeString(): {now.ToShortTimeString()}");
+
+                // Instance formatting methods
+                Console.WriteLine($"now.ToString(\"d\"): {now.ToString("d")}"); //Select a format using intellisense
+                Console.WriteLine($"now.ToString(\"HH:mm:ss\"): {now:HH:mm:ss}");
+                Console.WriteLine($"now.ToString(\"yyyy-MM-dd HH:mm:ss\"): {now:yyyy-MM-dd HH:mm:ss}");
+
+                // Instance comparison methods
+                var date1 = new DateTime(2023, 10, 1);
+                var date2 = new DateTime(2023, 10, 2);
+                Console.WriteLine($"date1.CompareTo(date2): {date1.CompareTo(date2)}");
+                Console.WriteLine($"date1.Equals(date2): {date1.Equals(date2)}");
+
+                Console.WriteLine();
+            }
+
+            static void TimeSpanStaticMembers()
+            {
+                Console.WriteLine("=== TimeSpan Static Members ===");
+
+                // Static properties
+                Console.WriteLine($"TimeSpan.Zero: {TimeSpan.Zero}");
+                Console.WriteLine($"TimeSpan.MinValue: {TimeSpan.MinValue}");
+                Console.WriteLine($"TimeSpan.MaxValue: {TimeSpan.MaxValue}");
+
+                // Static creation methods
+                Console.WriteLine($"TimeSpan.FromDays(1): {TimeSpan.FromDays(1)}");
+                Console.WriteLine($"TimeSpan.FromHours(2): {TimeSpan.FromHours(2)}");
+                Console.WriteLine($"TimeSpan.FromMinutes(3): {TimeSpan.FromMinutes(3)}");
+                Console.WriteLine($"TimeSpan.FromSeconds(4): {TimeSpan.FromSeconds(4)}");
+                Console.WriteLine($"TimeSpan.FromMilliseconds(5): {TimeSpan.FromMilliseconds(5)}");
+                Console.WriteLine($"TimeSpan.FromTicks(6): {TimeSpan.FromTicks(6)}");
+
+                // Static parsing methods
+                string timeSpanString = "1:02:03";
+                Console.WriteLine($"TimeSpan.Parse(\"{timeSpanString}\"): {TimeSpan.Parse(timeSpanString)}");
+                Console.WriteLine($"TimeSpan.ParseExact(\"{timeSpanString}\", \"g\", null): {TimeSpan.ParseExact(timeSpanString, "g", null)}");
+
+                // Static TryParse methods
+                bool success = TimeSpan.TryParse(timeSpanString, out TimeSpan result);
+                Console.WriteLine($"TimeSpan.TryParse result: {success}, Value: {result}");
+
+                // Static comparison method
+                var ts1 = new TimeSpan(1, 0, 0);
+                var ts2 = new TimeSpan(2, 0, 0);
+                Console.WriteLine($"TimeSpan.Compare(ts1, ts2): {TimeSpan.Compare(ts1, ts2)}");
+
+                Console.WriteLine();
+            }
+
+            static void TimeSpanInstanceMembers()
+            {
+                Console.WriteLine("=== TimeSpan Instance Members ===");
+
+                // Create instance
+                var timeSpan = new TimeSpan(1, 2, 3);
+                Console.WriteLine($"Instance timeSpan: {timeSpan}");
+
+                // Instance properties
+                Console.WriteLine($"timeSpan.Days: {timeSpan.Days}");
+                Console.WriteLine($"timeSpan.Hours: {timeSpan.Hours}");
+                Console.WriteLine($"timeSpan.Minutes: {timeSpan.Minutes}");
+                Console.WriteLine($"timeSpan.Seconds: {timeSpan.Seconds}");
+                Console.WriteLine($"timeSpan.Milliseconds: {timeSpan.Milliseconds}");
+                Console.WriteLine($"timeSpan.Ticks: {timeSpan.Ticks}");
+
+                // Total properties (instance)
+                Console.WriteLine($"timeSpan.TotalDays: {timeSpan.TotalDays}");
+                Console.WriteLine($"timeSpan.TotalHours: {timeSpan.TotalHours}");
+                Console.WriteLine($"timeSpan.TotalMinutes: {timeSpan.TotalMinutes}");
+                Console.WriteLine($"timeSpan.TotalSeconds: {timeSpan.TotalSeconds}");
+                Console.WriteLine($"timeSpan.TotalMilliseconds: {timeSpan.TotalMilliseconds}");
+
+                // Instance arithmetic methods
+                var ts1 = new TimeSpan(1, 0, 0);
+                var ts2 = new TimeSpan(0, 30, 0);
+                Console.WriteLine($"ts1.Add(ts2): {ts1.Add(TimeSpan.FromMinutes(5))}");
+                Console.WriteLine($"ts1.Subtract(ts2): {ts1.Subtract(ts2)}");
+                Console.WriteLine($"ts1.Negate(): {ts1.Negate()}");
+                Console.WriteLine($"ts1.Duration(): {ts1.Duration()}");
+                Console.WriteLine($"TimeSpan.FromDays(-1).Duration(): {TimeSpan.FromDays(-1).Duration()}");
+
+                // Instance comparison methods
+                Console.WriteLine($"ts1.CompareTo(ts2): {ts1.CompareTo(ts2)}");
+                Console.WriteLine($"ts1.Equals(ts2): {ts1.Equals(ts2)}");
+
+                // Instance formatting methods
+                Console.WriteLine($"timeSpan.ToString(): {timeSpan.ToString()}");
+                Console.WriteLine($"timeSpan.ToString(\"g\"): {timeSpan.ToString("g")}");
+                Console.WriteLine($"timeSpan.ToString(\"c\"): {timeSpan.ToString("c")}");
+
+                Console.WriteLine();
+            }
+
+            //Getting the Diff of two Dates/TimeSpans
+
+            static void DateTimeDifferences()
+            {
+                Console.WriteLine("=== DateTime Differences ===");
+
+                // Create sample dates
+                DateTime past = new DateTime(2023, 1, 1, 8, 30, 0);
+                DateTime now = DateTime.Now;
+                DateTime future = new DateTime(2025, 12, 31, 23, 59, 59);
+
+                Console.WriteLine($"Past date: {past:yyyy-MM-dd HH:mm:ss}");
+                Console.WriteLine($"Current date: {now:yyyy-MM-dd HH:mm:ss}");
+                Console.WriteLine($"Future date: {future:yyyy-MM-dd HH:mm:ss}\n");
+
+                // Method 1: Subtract dates to get TimeSpan
+                Console.WriteLine("Method 1: Subtract dates directly to get TimeSpan");
+                TimeSpan difference1 = now - past;
+                TimeSpan difference2 = future - now;
+
+                Console.WriteLine($"Time elapsed since past date: {difference1.Days} days, {difference1.Hours} hours, {difference1.Minutes} minutes");
+                Console.WriteLine($"Time until future date: {difference2.Days} days, {difference2.Hours} hours, {difference2.Minutes} minutes\n");
+
+                // Method 2: Using TimeSpan properties for total values
+                Console.WriteLine("Method 2: Using TimeSpan properties for total values");
+                Console.WriteLine($"Total days since past date: {difference1.TotalDays} days");
+                Console.WriteLine($"Total hours since past date: {difference1.TotalHours} hours");
+                Console.WriteLine($"Total minutes since past date: {difference1.TotalMinutes} minutes");
+                Console.WriteLine($"Total seconds since past date: {difference1.TotalSeconds} seconds\n");
+
+                // Method 3: Using DateTime.Subtract method
+                Console.WriteLine("Method 3: Using DateTime.Subtract method");
+                TimeSpan subtractDifference = now.Subtract(past);
+                Console.WriteLine($"Time since past date: {subtractDifference.Days} days, {subtractDifference.Hours} hours, {subtractDifference.Minutes} minutes\n");
+
+                // Method 4: Calculate specific time units
+                Console.WriteLine("Method 4: Calculate specific time units");
+
+                // Calculate years, months and remaining days between dates
+                int yearsPassed = CalculateYears(past, now);
+                int monthsPassed = CalculateMonths(past, now);
+                int remainingDays = CalculateRemainingDays(past, now);
+
+                Console.WriteLine($"Years since past date: {yearsPassed}");
+                Console.WriteLine($"Months since past date: {monthsPassed}");
+                Console.WriteLine($"Approximate years and months: {yearsPassed} years, {monthsPassed % 12} months, {remainingDays} days\n");
+
+                // Method 5: Getting specific date components
+                Console.WriteLine("Method 5: Getting time between specific date components");
+                DateTime today = DateTime.Today;
+                DateTime yesterday = today.AddDays(-1);
+                DateTime tomorrow = today.AddDays(1);
+                DateTime nextWeek = today.AddDays(7);
+                DateTime nextMonth = today.AddMonths(1);
+                DateTime nextYear = today.AddYears(1);
+
+                Console.WriteLine($"Hours since midnight: {(DateTime.Now - today).TotalHours:F2}");
+                Console.WriteLine($"Hours until midnight: {(today.AddDays(1) - DateTime.Now).TotalHours:F2}");
+                Console.WriteLine($"Hours until tomorrow: {(tomorrow - DateTime.Now).TotalHours:F2}");
+                Console.WriteLine($"Days until next week: {(nextWeek - today).TotalDays:F0}");
+                Console.WriteLine($"Days until next month: {(nextMonth - today).Days}");
+                Console.WriteLine($"Days until next year: {(nextYear - today).Days}\n");
+
+                // Method 6: Business days calculation
+                Console.WriteLine("Method 6: Business days calculation");
+                DateTime startDate = new DateTime(2023, 4, 10); // Monday
+                DateTime endDate = new DateTime(2023, 4, 21);   // Friday
+
+                int businessDays = CalculateBusinessDays(startDate, endDate);
+                Console.WriteLine($"Business days between {startDate:yyyy-MM-dd} and {endDate:yyyy-MM-dd}: {businessDays}");
+
+                Console.WriteLine();
+            }
+
+            static void TimeSpanDifferences()
+            {
+                Console.WriteLine("=== TimeSpan Differences ===");
+
+                // Create sample TimeSpans
+                TimeSpan workDay = new TimeSpan(8, 0, 0); // 8 hours
+                TimeSpan breakTime = new TimeSpan(0, 30, 0); // 30 minutes
+                TimeSpan lunchTime = new TimeSpan(1, 0, 0); // 1 hour
+                TimeSpan meetingTime = new TimeSpan(1, 30, 0); // 1 hour 30 minutes
+
+                Console.WriteLine($"Work day duration: {workDay}");
+                Console.WriteLine($"Break time: {breakTime}");
+                Console.WriteLine($"Lunch time: {lunchTime}");
+                Console.WriteLine($"Meeting time: {meetingTime}\n");
+
+                // Method 1: Subtract TimeSpans
+                Console.WriteLine("Method 1: Subtract TimeSpans");
+                TimeSpan workMinusBreaks = workDay - (breakTime + lunchTime);
+                Console.WriteLine($"Work time minus breaks: {workMinusBreaks}");
+                Console.WriteLine($"Actual working hours: {workMinusBreaks.TotalHours:F2} hours\n");
+
+                // Method 2: Difference between TimeSpans
+                Console.WriteLine("Method 2: Difference between TimeSpans");
+                TimeSpan difference = lunchTime - breakTime;
+                Console.WriteLine($"Difference between lunch and break: {difference}");
+                Console.WriteLine($"Lunch is {difference.TotalMinutes:F0} minutes longer than a break\n");
+
+                // Method 3: Calculate percentage of time
+                Console.WriteLine("Method 3: Calculate percentage of time");
+                double meetingPercentage = (meetingTime.TotalMinutes / workDay.TotalMinutes) * 100;
+                double breakPercentage = (breakTime.TotalMinutes / workDay.TotalMinutes) * 100;
+                double lunchPercentage = (lunchTime.TotalMinutes / workDay.TotalMinutes) * 100;
+                double productiveTimePercentage = ((workDay - (meetingTime + breakTime + lunchTime)).TotalMinutes / workDay.TotalMinutes) * 100;
+
+                Console.WriteLine($"Meetings take {meetingPercentage:F1}% of work day");
+                Console.WriteLine($"Breaks take {breakPercentage:F1}% of work day");
+                Console.WriteLine($"Lunch takes {lunchPercentage:F1}% of work day");
+                Console.WriteLine($"Productive time is {productiveTimePercentage:F1}% of work day\n");
+
+                // Method 4: Comparing TimeSpans
+                Console.WriteLine("Method 4: Comparing TimeSpans");
+                Console.WriteLine($"Is meeting longer than lunch? {meetingTime > lunchTime}");
+                Console.WriteLine($"Is break shorter than lunch? {breakTime < lunchTime}");
+                Console.WriteLine($"Is meeting equal to 1.5 hours? {meetingTime == TimeSpan.FromHours(1.5)}\n");
+
+                // Method 5: Formatting TimeSpan differences
+                Console.WriteLine("Method 5: Formatting TimeSpan differences");
+                TimeSpan workWeek = TimeSpan.FromHours(40);
+                TimeSpan actualWorked = TimeSpan.FromHours(43.5);
+                TimeSpan overtime = actualWorked - workWeek;
+
+                Console.WriteLine($"Standard work week: {FormatTimeSpan(workWeek)}");
+                Console.WriteLine($"Actual hours worked: {FormatTimeSpan(actualWorked)}");
+                Console.WriteLine($"Overtime: {FormatTimeSpan(overtime)}");
+                Console.WriteLine($"Overtime in minutes: {overtime.TotalMinutes:F0} minutes");
+
+                Console.WriteLine();
+            }
+
+            // Helper methods for working with date differences
+
+            static int CalculateYears(DateTime startDate, DateTime endDate)
+            {
+                int years = endDate.Year - startDate.Year;
+
+                // Adjust for incomplete years
+                if (endDate.Month < startDate.Month ||
+                    (endDate.Month == startDate.Month && endDate.Day < startDate.Day))
+                {
+                    years--;
+                }
+
+                return years;
+            }
+
+            static int CalculateMonths(DateTime startDate, DateTime endDate)
+            {
+                return (endDate.Year - startDate.Year) * 12 + endDate.Month - startDate.Month;
+            }
+
+            static int CalculateRemainingDays(DateTime startDate, DateTime endDate)
+            {
+                DateTime tempDate = startDate.AddMonths(CalculateMonths(startDate, endDate));
+                return (endDate - tempDate).Days;
+            }
+
+            static int CalculateBusinessDays(DateTime startDate, DateTime endDate)
+            {
+                // Initialize count with number of days between dates
+                int businessDays = 0;
+                DateTime currentDate = startDate;
+
+                while (currentDate <= endDate)
+                {
+                    // Check if current day is not Saturday (6) or Sunday (0)
+                    if (currentDate.DayOfWeek != DayOfWeek.Saturday && currentDate.DayOfWeek != DayOfWeek.Sunday)
+                    {
+                        businessDays++;
+                    }
+
+                    currentDate = currentDate.AddDays(1);
+                }
+
+                return businessDays;
+            }
+
+            static string FormatTimeSpan(TimeSpan timeSpan)
+            {
+                return $"{(int)timeSpan.TotalHours} hours, {timeSpan.Minutes} minutes";
+            }
+        }
+
+        static void StringBuilder()
+        {
+            Console.WriteLine("=== String Basics ===");
+
+            // String initialization
+            string str1 = "Hello";
+            string str2 = "World";
+            string str3 = string.Empty; // Same as ""
+            string str4 = null;
+
+            Console.WriteLine($"str1: {str1}");
+            Console.WriteLine($"str2: {str2}");
+            Console.WriteLine($"Empty string: '{str3}'");
+            Console.WriteLine($"Null string: {str4 ?? "null"}");
+
+            // String concatenation
+            Console.WriteLine("\n=== String Concatenation ===");
+            string concatenated1 = str1 + " " + str2;
+            string concatenated2 = string.Concat(str1, " ", str2);
+            string concatenated3 = $"{str1} {str2}"; // String interpolation
+
+            Console.WriteLine($"Using + operator: {concatenated1}");
+            Console.WriteLine($"Using string.Concat: {concatenated2}");
+            Console.WriteLine($"Using string interpolation: {concatenated3}");
+
+            // String properties
+            Console.WriteLine("\n=== String Properties ===");
+            Console.WriteLine($"Length of '{str1}': {str1.Length}");
+            Console.WriteLine($"Is str3 empty? {string.IsNullOrEmpty(str3)}");
+            Console.WriteLine($"Is str4 null or empty? {string.IsNullOrEmpty(str4)}");
+            Console.WriteLine($"Is str3 null or whitespace? {string.IsNullOrWhiteSpace(str3)}");
+
+            // Accessing characters
+            Console.WriteLine("\n=== Accessing Characters ===");
+            Console.WriteLine($"First character of '{str1}': {str1[0]}");
+            Console.WriteLine($"Last character of '{str1}': {str1[^1]}");
+
+            // String comparison
+            Console.WriteLine("\n=== String Comparison ===");
+            Console.WriteLine($"str1 == 'Hello': {str1 == "Hello"}");
+            Console.WriteLine($"str1.Equals('hello'): {str1.Equals("hello")}");
+            Console.WriteLine($"str1.Equals('hello', StringComparison.OrdinalIgnoreCase): {str1.Equals("hello", StringComparison.OrdinalIgnoreCase)}");
+            Console.WriteLine($"string.Compare(str1, 'hello'): {string.Compare(str1, "hello")}");
+            Console.WriteLine($"string.Compare(str1, 'hello', true): {string.Compare(str1, "hello", true)}");
+
+            // String searching
+            Console.WriteLine("\n=== String Searching ===");
+            string sentence = "The quick brown fox jumps over the lazy dog";
+            Console.WriteLine($"Sentence: {sentence}");
+            Console.WriteLine($"Contains 'fox': {sentence.Contains("fox")}");
+            Console.WriteLine($"Contains 'FOX' (case insensitive): {sentence.Contains("FOX", StringComparison.OrdinalIgnoreCase)}");
+            Console.WriteLine($"Starts with 'The': {sentence.StartsWith("The")}");
+            Console.WriteLine($"Ends with 'dog': {sentence.EndsWith("dog")}");
+            Console.WriteLine($"Index of 'quick': {sentence.IndexOf("quick")}");
+            Console.WriteLine($"Last index of 'the': {sentence.LastIndexOf("the")}");
+
+            // Substring
+            Console.WriteLine("\n=== Substring Operations ===");
+            Console.WriteLine($"Substring(4, 5): {sentence.Substring(4, 5)}"); // "quick"
+            Console.WriteLine($"Substring(16): {sentence.Substring(16)}"); // "fox jumps over the lazy dog"
+
+            // String manipulation
+            Console.WriteLine("\n=== String Manipulation ===");
+            Console.WriteLine($"ToUpper: {sentence.ToUpper()}");
+            Console.WriteLine($"ToLower: {sentence.ToLower()}");
+            Console.WriteLine($"Replace 'fox' with 'cat': {sentence.Replace("fox", "cat")}");
+            Console.WriteLine($"Remove(0, 4): {sentence.Remove(0, 4)}"); // Removes "The "
+
+            // Trimming
+            Console.WriteLine("\n=== String Trimming ===");
+            string paddedString = "   Hello World   ";
+            Console.WriteLine($"Original: '{paddedString}'");
+            Console.WriteLine($"Trim: '{paddedString.Trim()}'");
+            Console.WriteLine($"TrimStart: '{paddedString.TrimStart()}'");
+            Console.WriteLine($"TrimEnd: '{paddedString.TrimEnd()}'");
+
+            // Splitting
+            Console.WriteLine("\n=== String Splitting ===");
+            string csvLine = "John,Doe,42,New York";
+            string[] parts = csvLine.Split(',');
+            Console.WriteLine("CSV parts:");
+            foreach (var part in parts)
+            {
+                Console.WriteLine($"  - {part}");
+            }
+
+            // Joining
+            Console.WriteLine("\n=== String Joining ===");
+            string[] words = { "Hello", "World", "C#", "Programming" };
+            string joined = string.Join(" ", words);
+            Console.WriteLine($"Joined string: {joined}");
+
+            // Format strings
+            Console.WriteLine("\n=== String Formatting ===");
+            decimal price = 123.45m;
+            DateTime now = DateTime.Now;
+            Console.WriteLine($"Currency format: {price:C}");
+            Console.WriteLine($"Number format with 2 decimals: {price:F2}");
+            Console.WriteLine($"Percent format: {0.75:P}");
+            Console.WriteLine($"Date format: {now:yyyy-MM-dd}");
+            Console.WriteLine($"Time format: {now:HH:mm:ss}");
+
+            // String.Format method
+            Console.WriteLine("\n=== String.Format Method ===");
+            string formattedString = string.Format("Name: {0}, Age: {1}, City: {2}", "John", 30, "New York");
+            Console.WriteLine(formattedString);
+
+            // StringBuilder (for performance when building large strings)
+            Console.WriteLine("\n=== StringBuilder Example ===");
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            sb.Append("Hello");
+            sb.Append(" ");
+            sb.Append("World");
+            sb.AppendLine("!");
+            sb.AppendFormat("Today is {0:d}", DateTime.Now);
+            Console.WriteLine(sb.ToString());
+
+            // String interpolation vs string.Format
+            Console.WriteLine("\n=== String Interpolation vs Format ===");
+            string name = "John";
+            int age = 30;
+            string withFormat = string.Format("Name: {0}, Age: {1}", name, age);
+            string withInterpolation = $"Name: {name}, Age: {age}";
+            Console.WriteLine($"With Format: {withFormat}");
+            Console.WriteLine($"With Interpolation: {withInterpolation}");
+
+            // Verbatim strings
+            Console.WriteLine("\n=== Verbatim Strings ===");
+            string path = "C:\\Program Files\\dotnet";
+            string verbatimPath = @"C:\Program Files\dotnet";
+            Console.WriteLine($"Regular path: {path}");
+            Console.WriteLine($"Verbatim path: {verbatimPath}");
+            Console.WriteLine(@"Verbatim strings can span multiple lines without escape characters.");
+
+            // String parsing
+            Console.WriteLine("\n=== String Parsing ===");
+            string numberStr = "42";
+            int number = int.Parse(numberStr);
+            Console.WriteLine($"Parsed number: {number}");
+
+            bool parseSuccess = int.TryParse("abc", out int result);
+            Console.WriteLine($"Parse 'abc' success: {parseSuccess}, result: {result}");
+
+            // String immutability example
+            Console.WriteLine("\n=== String Immutability ===");
+            string original = "Hello";
+            string modified = original;
+            modified += " World"; // Creates a new string, doesn't modify 'original'
+            Console.WriteLine($"Original: {original}");
+            Console.WriteLine($"Modified: {modified}");
+
+            // Case conversion
+            Console.WriteLine("\n=== Case Conversion ===");
+            string mixedCase = "ThIs Is MiXeD cAsE";
+            Console.WriteLine($"Original: {mixedCase}");
+            Console.WriteLine($"ToLower: {mixedCase.ToLower()}");
+            Console.WriteLine($"ToUpper: {mixedCase.ToUpper()}");
+            Console.WriteLine($"ToLowerInvariant: {mixedCase.ToLowerInvariant()}");
+            Console.WriteLine($"ToUpperInvariant: {mixedCase.ToUpperInvariant()}");
+
+            // String padding
+            Console.WriteLine("\n=== String Padding ===");
+            string shortText = "Hi";
+            Console.WriteLine($"Original: '{shortText}'");
+            Console.WriteLine($"PadLeft(5): '{shortText.PadLeft(5)}'");
+            Console.WriteLine($"PadRight(5): '{shortText.PadRight(5)}'");
+            Console.WriteLine($"PadLeft(5, '*'): '{shortText.PadLeft(5, '*')}'");
+            Console.WriteLine($"PadRight(5, '*'): '{shortText.PadRight(5, '*')}'");
+
+            // String.IsNullOrEmpty vs String.IsNullOrWhiteSpace
+            Console.WriteLine("\n=== IsNullOrEmpty vs IsNullOrWhiteSpace ===");
+            string emptyString = "";
+            string whitespaceString = "   ";
+            Console.WriteLine($"IsNullOrEmpty(emptyString): {string.IsNullOrEmpty(emptyString)}");
+            Console.WriteLine($"IsNullOrEmpty(whitespaceString): {string.IsNullOrEmpty(whitespaceString)}");
+            Console.WriteLine($"IsNullOrWhiteSpace(emptyString): {string.IsNullOrWhiteSpace(emptyString)}");
+            Console.WriteLine($"IsNullOrWhiteSpace(whitespaceString): {string.IsNullOrWhiteSpace(whitespaceString)}");
+
+            //Converting Numbers to Strings
+            Console.WriteLine("\n=== Converting Numbers to Strings ===");
+            int numberToConvert = 12345;
+            string numberString = numberToConvert.ToString();
+            string formattedNumber = numberToConvert.ToString("N0"); // Number with commas
+            string currencyString = numberToConvert.ToString("C"); // Currency format
+            string hexString = numberToConvert.ToString("X"); // Hexadecimal format
+            Console.WriteLine($"Number: {numberToConvert}");
+            Console.WriteLine($"ToString(): {numberString}");
+            Console.WriteLine($"ToString(\"N0\"): {formattedNumber}");
+            Console.WriteLine($"ToString(\"C\"): {currencyString}");
+            Console.WriteLine($"ToString(\"X\"): {hexString}");
+
+            // Additional formatting examples
+            Console.WriteLine("\n=== Additional Number Format Specifiers ===");
+            Console.WriteLine($"Scientific notation (E): {numberToConvert.ToString("E")}");
+            Console.WriteLine($"Percent (P): {(numberToConvert / 100000.0).ToString("P")}");
+            Console.WriteLine($"Fixed-point (F2): {numberToConvert.ToString("F2")}");
+            Console.WriteLine($"Custom (#,##0.00): {numberToConvert.ToString("#,##0.00")}");
+
+            // Padding and alignment
+            Console.WriteLine("\n=== Padding and Alignment ===");
+            Console.WriteLine($"Left-padded to 10 chars: {numberToConvert.ToString().PadLeft(10, '0')}");
+            Console.WriteLine($"Right-padded to 10 chars: {numberToConvert.ToString().PadRight(10, '-')}");
+
+            // Culture-aware formatting without specific culture instances
+            Console.WriteLine("\n=== Culture-Aware Formatting ===");
+            Console.WriteLine($"Current culture currency: {numberToConvert.ToString("C")}");
+
+            // Alternative approach using CultureInfo.InvariantCulture
+            Console.WriteLine("\n=== Invariant Culture Formatting ===");
+            Console.WriteLine($"Invariant culture: {numberToConvert.ToString("N2", System.Globalization.CultureInfo.InvariantCulture)}");
+
+
+        }
+
     }
 }
