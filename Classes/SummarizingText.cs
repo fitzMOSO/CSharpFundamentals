@@ -1,13 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CSharpFundamentals.Classes
+﻿namespace CSharpFundamentals.Classes
 {
     internal class SummarizingText
     {
+        //Show text summarization demo
+        public static void ShowTextSummarization()
+        {
+            Console.WriteLine("Text Summarization Demo");
+            Console.WriteLine("=======================");
+
+            const string text =
+                "This is a very long text that needs to be summarized into a shorter version.";
+            Console.WriteLine($"Original text: {text}");
+
+            //Summary
+            var summary = SummarizeText(text, 25);
+            Console.WriteLine(summary);
+        }
+
+        //Summarize text method
         public static string SummarizeText(string text, int maxLength = 20)
         {
             if (text.Length <= maxLength)
@@ -27,19 +37,6 @@ namespace CSharpFundamentals.Classes
             }
 
             return string.Join(" ", summaryWords) + "...";
-        }
-
-        public static void ShowTextSummarization()
-        {
-            Console.WriteLine("Text Summarization Demo");
-            Console.WriteLine("=======================");
-
-            var text =
-                "This is a very long text that needs to be summarized into a shorter version.";
-            Console.WriteLine($"Original text: {text}");
-
-            var summary = SummarizeText(text, 25);
-            Console.WriteLine($"Summarized text: {summary}");
         }
     }
 }

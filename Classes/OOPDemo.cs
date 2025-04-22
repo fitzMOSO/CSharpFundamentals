@@ -1,5 +1,3 @@
-using System;
-
 namespace CSharpFundamentals.Classes
 {
     public class OOPDemo

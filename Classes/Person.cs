@@ -1,12 +1,13 @@
-﻿namespace CSharpFundamentals.Classes;
-
-internal class Person()
+﻿namespace CSharpFundamentals.Classes
 {
-    public string? FirstName;
-    public string? LastName;
-
-    public void Introduce()
+    internal class Person()
     {
-        Console.WriteLine($"Hello, my name is {FirstName} {LastName}");
+        public string? FirstName;
+        public string? LastName;
+
+        public void Introduce()
+        {
+            Console.WriteLine($"Hello, my name is {FirstName} {LastName}");
+        }
     }
 }

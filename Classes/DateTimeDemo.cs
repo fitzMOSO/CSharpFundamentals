@@ -1,5 +1,3 @@
-using System;
-
 namespace CSharpFundamentals.Classes
 {
     public class DateTimeDemo
@@ -312,10 +310,10 @@ namespace CSharpFundamentals.Classes
             double breakPercentage = (breakTime.TotalMinutes / workDay.TotalMinutes) * 100;
             double lunchPercentage = (lunchTime.TotalMinutes / workDay.TotalMinutes) * 100;
             double productiveTimePercentage =
-                (
-                    (workDay - (meetingTime + breakTime + lunchTime)).TotalMinutes
-                    / workDay.TotalMinutes
-                ) * 100;
+            (
+                (workDay - (meetingTime + breakTime + lunchTime)).TotalMinutes
+                / workDay.TotalMinutes
+            ) * 100;
 
             Console.WriteLine($"Meetings take {meetingPercentage:F1}% of work day");
             Console.WriteLine($"Breaks take {breakPercentage:F1}% of work day");

@@ -1,6 +1,3 @@
-using System;
-using System.Text;
-
 namespace CSharpFundamentals.Classes
 {
     public class StringDemo
@@ -178,9 +175,9 @@ namespace CSharpFundamentals.Classes
             );
             Console.WriteLine(formattedString);
 
-            // StringBuilder (for performance when building large strings)
-            Console.WriteLine("\n=== StringBuilder Example ===");
-            StringBuilder sb = new StringBuilder();
+            // StringBuilderDemo (for performance when building large strings)
+            Console.WriteLine("\n=== StringBuilderDemo Example ===");
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
             sb.Append("Hello");
             sb.Append(" ");
             sb.Append("World");
