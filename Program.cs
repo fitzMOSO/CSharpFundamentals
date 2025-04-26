@@ -1,5 +1,5 @@
-﻿using CSharpFundamentals.Classes;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using CSharpFundamentals.Classes;
 
 namespace CSharpFundamentals
 {
@@ -51,12 +51,15 @@ namespace CSharpFundamentals
             //AdvancedTopics.FileOperationsDemo(); // Demonstrates file and directory creation and management
             //AdvancedTopics.DependencyInjectionDemo(); // Shows basic dependency injection patterns and principles
 
-            // Summarizing Text
-            var summary = SummarizingText.SummarizeText(LoremIpsum.GenerateWords(35), 21); // Demonstrates text summarization
-            Console.WriteLine(summary);
+            // Working with Text
+            //var summary = SummarizingText.SummarizeText(LoremIpsum.GenerateWords(35), 21); // Demonstrates text summarization
+            //Console.WriteLine(summary);
+            //StringBuilderDemo.BuildString();
 
-            // StringBuilderDemo
-            StringBuilderDemo.BuildString();
+            //Working with Files
+            // FileDemo.RunExamples(); // Demonstrates file reading, writing, and directory operations
+            // FileDemo.RunFileSystemExamples();
+            PathDemo.RunPathExamples(); // Shows path manipulation and file system operations
         }
     }
 }
